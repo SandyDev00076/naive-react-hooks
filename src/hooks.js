@@ -37,12 +37,21 @@ export const React = (() => {
         index = 0;
     }
 
+    /**
+     * Naive implementation of useEffect
+     */
     function useEffect(callback, dependencyArray) {
+        /** Initial value is true because if no dependencyArray is provided,
+         * callback should execute
+         */
         let hasChanged = true;
 
         let oldDependencies = hooks[index];
 
         if (oldDependencies) {
+            /** It is set to false here first because, if we pass an empty array,
+             * callback should not execute after the first time
+             */
             hasChanged = false;
             dependencyArray.forEach((dep, index) => {
                 if (!Object.is(dep, oldDependencies[index])) {
@@ -51,6 +60,7 @@ export const React = (() => {
             })
         }
 
+        /** If any dependency has changed, execute the callback */
         if (hasChanged) {
             callback();
         }
